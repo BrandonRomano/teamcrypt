@@ -1,0 +1,31 @@
+#!/bin/bash
+
+read -d '' usage <<__EOF
+teamcrypt, version 1.0.0
+
+usage: man [-e encrypt] [-d decrypt]
+
+  e encrypt : encrypt the stdin and output result to stdout
+  d decrypt : decrypt the stdin and output result to stdout
+__EOF
+
+if [[ "$TEAMCRYPT_SECRET" = "" ]]; then
+    echo "teamcrypt: TEAMCRYPT_SECRET not set"
+    exit 1
+fi
+
+if [[ -p /dev/stdin ]]; then
+    if [[ "$1" = "-e" || "$1" = "--encrypt" ]]; then
+        echo "$(cat <&0)" | openssl aes-256-cbc -base64 -k "$TEAMCRYPT_SECRET"
+    elif [[ "$1" = "-d" || "$1" = "--decrypt" ]]; then
+        echo "$(cat <&0)" | openssl aes-256-cbc -d -base64 -k "$TEAMCRYPT_SECRET"
+        exit 0
+    else
+        echo "teamcrypt: invalid option -- '$1'"
+        echo "$usage"
+        exit 1
+    fi
+else
+    echo "teamcrypt: no stdin"
+    exit 1
+fi
