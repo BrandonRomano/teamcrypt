@@ -16,9 +16,9 @@ fi
 
 if [[ -p /dev/stdin ]]; then
     if [[ "$1" = "-e" || "$1" = "--encrypt" ]]; then
-        echo "$(cat <&0)" | openssl aes-256-cbc -base64 -k "$TEAMCRYPT_SECRET"
+        cat <&0 | openssl aes-256-cbc -base64 -k "$TEAMCRYPT_SECRET"
     elif [[ "$1" = "-d" || "$1" = "--decrypt" ]]; then
-        echo "$(cat <&0)" | openssl aes-256-cbc -d -base64 -k "$TEAMCRYPT_SECRET"
+        cat <&0 | openssl aes-256-cbc -d -base64 -k "$TEAMCRYPT_SECRET"
         exit 0
     else
         echo "teamcrypt: invalid option -- '$1'"
