@@ -5,7 +5,7 @@ Encrypt data for secure sharing between teammates.
 ## Installation + Setup
 
 ```sh
-git clone https://github.com/BrandonRomano/teamcrypt.git
+git clone https://github.com/vet/teamcrypt.git
 cp teamcrypt/teamcrypt /usr/local/bin
 ```
 
